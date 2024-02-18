@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leepo/methods/common_methods.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -11,12 +12,39 @@ class _SignupScreen extends State<SignupScreen> {
   TextEditingController userNameEditingController = new TextEditingController();
   TextEditingController EmailtextEditingController = new TextEditingController();
   TextEditingController PassWordtextEditingController = new TextEditingController();
-    TextEditingController userPhonetextEditingController = new TextEditingController();
+  TextEditingController userPhonetextEditingController = new TextEditingController();
+  CommonMethods cMethods = new CommonMethods();
 
 
     checkIfNetworkIsAvailable(){
+      cMethods.checkConnectivity(context);
+      SignUpFormValidation();
+    }
+
+    SignUpFormValidation(){
+      if(userNameEditingController.text.trim().length < 3)
+      {
+        cMethods.displaySnackBar("your name must be at least 4 or more characters", context);
+
+      }
+      else if((userPhonetextEditingController.text.trim().length<7)){
+        cMethods.displaySnackBar("write a valid phone number", context);
+
+      }
+
+      else if(!(EmailtextEditingController.text.contains("@"))){
+        cMethods.displaySnackBar("please write a valid email address", context);
+      }
+      else if(PassWordtextEditingController.text.trim().length < 5){
+        cMethods.displaySnackBar("your password must be at least 6 or more characters", context);
+      }
+      else{
+
+      }
       
     }
+
+
 
 
   @override
@@ -53,6 +81,10 @@ class _SignupScreen extends State<SignupScreen> {
                     ),
                   ),
                 ),
+
+                SizedBox(
+                  height: 10,
+                ),
                 Padding(
                   padding: EdgeInsets.only(left: 20, right: 20, bottom: 5),
                   child: TextField(
@@ -68,6 +100,30 @@ class _SignupScreen extends State<SignupScreen> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+
+
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 5),
+                  child: TextField(
+                    style: TextStyle(color: Colors.white),
+                    controller: userPhonetextEditingController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: "Phone Number",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      hintText: 'Phone Number',
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10,),
+
+
                 Padding(
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextField(
@@ -90,7 +146,7 @@ class _SignupScreen extends State<SignupScreen> {
                 ),
                 GestureDetector(
                     child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {checkIfNetworkIsAvailable();},
                   child: Text(
                     'Sign up',
                   ),
